@@ -2,56 +2,173 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CoolShift – IIIT-Delhi Facility Dashboard</title>
 <style>
-:root{--bg:#fff;--card:#fff;--ink:#101418;--mute:#6b7380;--line:#e6e9ee;--std:#f3f5f8;--b:#3b78d8;--bs:#e8f0fc;--g:#1f9d55;--gs:#e5f5ec;--a:#b8700b;--as:#fcf0d8;--r:#c0392b;--rs:#fbe7e4;--k:#101418;--gr:#b9c0ca;--sol:#d3f0df;--pk:#f8d9d4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1318;--card:#171c23;--ink:#e8ecf1;--mute:#98a2b0;--line:#2a313b;--std:#1d232c;--b:#6a9cf0;--bs:#1b2a44;--g:#4cc27f;--gs:#173626;--a:#e8a23c;--as:#3a2c12;--r:#f0786b;--rs:#3d1d1a;--k:#e8ecf1;--gr:#566170;--sol:#1c4630;--pk:#4a2420}}
-:root[data-theme=dark]{--bg:#0f1318;--card:#171c23;--ink:#e8ecf1;--mute:#98a2b0;--line:#2a313b;--std:#1d232c;--b:#6a9cf0;--bs:#1b2a44;--g:#4cc27f;--gs:#173626;--a:#e8a23c;--as:#3a2c12;--r:#f0786b;--rs:#3d1d1a;--k:#e8ecf1;--gr:#566170;--sol:#1c4630;--pk:#4a2420}
+:root{--bg:#ffffff;--card:#ffffff;--ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--std:#f8fafc;--b:#2563eb;--bs:#eff6ff;--g:#16a34a;--gs:#f0fdf4;--a:#d97706;--as:#fffbeb;--r:#dc2626;--rs:#fef2f2;--k:#0f172a;--gr:#cbd5e1;--sol:#dcfce7;--pk:#fee2e2;--card-shadow:0 1px 3px rgba(0,0,0,0.03),0 4px 12px -2px rgba(0,0,0,0.02);--card-shadow-hover:0 8px 24px -4px rgba(0,0,0,0.06);--ease-out-quint:cubic-bezier(0.16,1,0.3,1);--ease-standard:cubic-bezier(0.2,0,0,1);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme=dark]{--bg:#0b0f17;--card:#141b27;--ink:#f8fafc;--mute:#94a3b8;--line:#222d3d;--std:#182232;--b:#3b82f6;--bs:rgba(59,130,246,0.15);--g:#22c55e;--gs:rgba(34,197,94,0.15);--a:#f59e0b;--as:rgba(245,158,11,0.15);--r:#ef4444;--rs:rgba(239,68,68,0.15);--k:#f8fafc;--gr:#475569;--sol:rgba(34,197,94,0.2);--pk:rgba(239,68,68,0.2);--card-shadow:0 4px 16px -2px rgba(0,0,0,0.4);--card-shadow-hover:0 12px 28px -4px rgba(0,0,0,0.55)}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
-#pg{position:fixed;top:0;left:0;height:3px;width:0;background:var(--b);z-index:9}
-.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top,0px)) 24px 10px;gap:10px;flex-wrap:wrap}
-.bc{color:var(--mute);font-size:13px}.bc b{color:var(--ink)}.tr{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.chip{background:var(--as);color:var(--a);font-weight:700;font-size:12px;padding:6px 14px;border-radius:99px}
-.app{display:grid;grid-template-columns:210px 1fr}
-nav{position:sticky;top:56px;align-self:start;padding:18px 14px;display:flex;flex-direction:column;gap:3px;height:calc(100vh - 56px);border-right:1px solid var(--line);overflow:auto}
-nav b{font-size:17px;padding:0 10px 2px}nav .s{color:var(--mute);font-size:12px;padding:0 10px 10px}
-nav a{color:var(--mute);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;font-size:14px}
-nav a:hover{background:var(--std)}nav a.on{background:var(--bs);color:var(--b)}
-nav .bl{color:var(--mute);font-size:12px;padding:10px 10px 0;border-top:1px solid var(--line);margin-top:10px}nav .bl b{font-size:12px;color:var(--ink);padding:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;transition:background-color 0.3s ease,color 0.3s ease}
+
+/* Composite Scroll Progress Bar */
+#pg{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--b);z-index:99;transform-origin:left;will-change:transform;transition:width 0.1s linear}
+
+/* Top Bar */
+.top{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:12px 24px;gap:12px;flex-wrap:wrap;transition:background-color 0.3s ease,border-color 0.3s ease}
+.bc{color:var(--mute);font-size:13px;display:flex;align-items:center;gap:6px}.bc b{color:var(--ink);font-weight:700}
+.tr{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.edited-txt{font-size:12px;color:var(--mute);margin-right:4px}
+
+/* App Grid & Sidebar */
+.app{display:grid;grid-template-columns:240px 1fr}
+nav{position:sticky;top:57px;align-self:start;padding:20px 14px;display:flex;flex-direction:column;gap:4px;height:calc(100vh - 57px);border-right:1px solid var(--line);overflow-y:auto;background:var(--bg);transition:background-color 0.3s ease,border-color 0.3s ease}
+.nav-head{padding:0 8px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.nav-logo{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-0.01em;line-height:1}
+.nav-logo svg{width:17px;height:17px;flex-shrink:0;display:inline-block}
+.nav-sub{font-size:11px;color:var(--mute);margin-top:4px;line-height:1.4}
+
+nav a{display:flex;align-items:center;gap:10px;color:var(--mute);text-decoration:none;font-weight:500;padding:9px 12px;border-radius:10px;font-size:13.5px;transition:all 0.18s var(--ease-out-quint)}
+nav a svg{width:17px;height:17px;stroke:currentColor;flex-shrink:0;transition:transform 0.18s ease}
+nav a:hover{background:var(--std);color:var(--ink);transform:translateX(3px)}
+nav a.on{background:var(--bs);color:var(--b);font-weight:700}
+nav a.on svg{stroke:var(--b)}
+
+.sidebar-sec{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
+.sb-title{font-size:11px;font-weight:700;letter-spacing:0.06em;color:var(--mute);text-transform:uppercase;padding:0 8px 6px}
+.sb-item{font-size:12px;color:var(--mute);padding:3px 8px;display:flex;align-items:center;gap:6px}
+.dot-green{width:6px;height:6px;border-radius:50%;background:var(--g);display:inline-block}
+
 a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--b);outline-offset:2px}
-main{padding:32px 28px 60px;max-width:980px;width:100%}section{margin-bottom:56px}
-h1{font-size:clamp(30px,5vw,46px);line-height:1.08;letter-spacing:-.02em;margin:14px 0 12px;max-width:17ch}
-h2{font-size:24px;margin:0 0 4px;letter-spacing:-.01em}h3{font-size:15px;margin:0 0 6px}
-.lead{font-size:17px;color:var(--mute);max-width:58ch}.mute{color:var(--mute);font-size:13px}p{margin:0}
-.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--std);color:var(--mute);white-space:nowrap}
-.ok{background:var(--gs);color:var(--g)}.warn{background:var(--as);color:var(--a)}.bad{background:var(--rs);color:var(--r)}.blue{background:var(--bs);color:var(--b)}
-.grid{display:grid;gap:14px;margin-top:16px}.k4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}.k2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-.kv{font-size:28px;font-weight:700;margin:2px 0;letter-spacing:-.01em}
-.row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+
+/* Centered Main Area & Typography */
+main{margin:0 auto;padding:40px 48px 80px;max-width:960px;width:100%}
+section{margin-bottom:60px;animation:fadeSlideUp 0.5s var(--ease-out-quint) both}
+
+@supports (animation-timeline: view()) {
+ section {
+  animation: section-reveal linear both;
+  animation-timeline: view();
+  animation-range: entry 5% cover 25%;
+ }
+}
+
+@keyframes fadeSlideUp {
+ from{opacity:0;transform:translateY(18px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes section-reveal {
+ from{opacity:0;transform:translateY(24px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+/* Badges Header */
+.badge-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.badge-amber{background:#fef3c7;color:#d97706;font-weight:700;font-size:11px;padding:4px 12px;border-radius:99px;letter-spacing:0.03em;display:inline-flex;align-items:center;gap:5px}
+.badge-green{background:#dcfce7;color:#16a34a;font-weight:700;font-size:11px;padding:4px 12px;border-radius:99px;letter-spacing:0.03em}
+.badge-muted{color:var(--mute);font-size:12px;font-weight:500;margin-left:4px}
+:root[data-theme=dark] .badge-amber{background:rgba(245,158,11,0.2);color:#f59e0b}
+:root[data-theme=dark] .badge-green{background:rgba(34,197,94,0.2);color:#4ade80}
+
+h1{font-size:clamp(32px,4vw,44px);line-height:1.12;font-weight:800;letter-spacing:-0.025em;margin:14px 0 14px;color:var(--ink);max-width:18ch}
+h2{font-size:24px;font-weight:700;margin:0 0 6px;letter-spacing:-0.015em;color:var(--ink)}
+h3{font-size:15px;font-weight:700;margin:0 0 6px;color:var(--ink)}
+.lead{font-size:16.5px;line-height:1.6;color:var(--mute);max-width:62ch}.mute{color:var(--mute);font-size:13px}p{margin:0}
+
+/* Cards Layout */
+.grid{display:grid;gap:16px;margin-top:20px}
+.k4{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.k2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--card-shadow);transition:all 0.25s var(--ease-out-quint);will-change:transform}
+.card:hover{transform:translateY(-2px);box-shadow:var(--card-shadow-hover);border-color:var(--gr)}
+.card p.mute{font-size:11.5px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.kv{font-size:32px;font-weight:800;letter-spacing:-0.02em;margin:4px 0;color:var(--ink);line-height:1.15}
+
+.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);transition:background-color 0.15s ease}.row:last-child{border:0}
 .ctl{display:grid;grid-template-columns:210px 1fr 56px;gap:10px;align-items:center;margin:6px 0;font-size:14px}
-.strip{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;margin:3px 0 10px}.strip i{height:22px;border-radius:3px;background:var(--std)}
+.strip{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;margin:3px 0 10px}.strip i{height:22px;border-radius:3px;background:var(--std);transition:transform 0.15s var(--ease-out-quint),opacity 0.15s ease}
+.strip i:hover{transform:scaleY(1.2);z-index:2}
 .strip i.on{background:var(--k)}.strip i.sol{background:var(--sol)}.strip i.pk{background:var(--pk)}
 .tick{display:grid;grid-template-columns:repeat(8,1fr);font-size:11px;color:var(--mute)}
-table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--mute);font-weight:600;font-size:12px;padding:10px;background:var(--std)}td{padding:12px 10px;border-bottom:1px solid var(--line)}.wrap{overflow-x:auto}
-.note{background:var(--as);color:var(--a);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;margin-top:14px}
-.btn{all:unset;cursor:pointer;background:var(--b);color:#fff;font-weight:700;padding:8px 16px;border-radius:8px;font-size:14px}
-.btn.o{background:var(--std);color:var(--ink)}.btn.on{background:var(--r);color:#fff}.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--mute);font-weight:600;font-size:12px;padding:10px;background:var(--std)}td{padding:12px 10px;border-bottom:1px solid var(--line);transition:background-color 0.15s ease}tr:hover td{background:rgba(59,120,216,0.03)}.wrap{overflow-x:auto}
+.note{background:var(--as);color:var(--a);border-radius:10px;padding:12px 16px;font-size:13px;font-weight:600;margin-top:14px;transition:transform 0.2s var(--ease-out-quint)}
+
+/* Buttons */
+.btn{all:unset;cursor:pointer;background:var(--b);color:#fff;font-weight:600;padding:8px 18px;border-radius:10px;font-size:13.5px;transition:all 0.18s var(--ease-out-quint);display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(37,99,235,0.3)}
+.btn:active{transform:translateY(0) scale(0.98)}
+.btn.o{background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.o:hover{background:var(--std);border-color:var(--gr);box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.btn.on{background:var(--r);color:#fff}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
 svg{width:100%;height:auto;display:block}.lg{display:flex;gap:14px;font-size:12px;color:var(--mute);flex-wrap:wrap}
-.wk{display:flex;gap:8px;align-items:flex-end;height:150px;margin-top:10px}.wk div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:11px;color:var(--mute)}
-.wk span{display:flex;gap:3px;align-items:flex-end;height:120px;width:100%;justify-content:center}.wk i{width:38%;border-radius:3px 3px 0 0;display:block}
-details{margin-top:12px}summary{cursor:pointer;font-weight:700;color:var(--b)}
-.fl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}.fl div{background:var(--std);border-radius:10px;padding:10px;font-size:13px}
-.tip{position:absolute;top:0;pointer-events:none;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;box-shadow:0 4px 14px rgba(0,0,0,.14);transform:translateX(-50%);display:none;white-space:nowrap;z-index:3;line-height:1.5}.lgb{all:unset;cursor:pointer;padding:2px 8px;border-radius:99px;border:1px solid var(--line);font-size:12px;color:var(--ink)}.lgb[aria-pressed=false]{opacity:.45;text-decoration:line-through}.wk i{transition:opacity .15s}.wk i:hover{opacity:.7}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}footer{color:var(--mute);font-size:12px;text-align:center}
-@media(max-width:760px){.app{grid-template-columns:1fr}nav{position:sticky;top:56px;flex-direction:row;overflow-x:auto;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:8px;background:var(--bg);z-index:4}nav b,nav .s,nav .bl{display:none}nav a{white-space:nowrap}main{padding:24px 16px}.ctl{grid-template-columns:1fr 56px}.ctl label{grid-column:1/-1}}
+
+.wk{display:flex;gap:8px;align-items:flex-end;height:150px;margin-top:10px}.wk div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:11px;color:var(--mute);transition:transform 0.2s var(--ease-out-quint)}
+.wk div:hover{transform:translateY(-2px)}
+.wk span{display:flex;gap:3px;align-items:flex-end;height:120px;width:100%;justify-content:center}.wk i{width:38%;border-radius:3px 3px 0 0;display:block;transition:height 0.4s var(--ease-out-quint),opacity 0.15s ease}
+.wk i:hover{opacity:.85}
+
+details{margin-top:12px}summary{cursor:pointer;font-weight:700;color:var(--b);transition:color 0.15s ease}summary:hover{color:var(--ink)}
+.fl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}.fl div{background:var(--std);border-radius:10px;padding:10px;font-size:13px;transition:transform 0.2s var(--ease-out-quint)}.fl div:hover{transform:translateY(-2px)}
+.tip{position:absolute;top:0;pointer-events:none;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;box-shadow:0 6px 20px rgba(0,0,0,.18);transform:translateX(-50%);display:none;white-space:nowrap;z-index:3;line-height:1.5;backdrop-filter:blur(4px);transition:left 0.1s ease,opacity 0.15s ease}.lgb{all:unset;cursor:pointer;padding:2px 8px;border-radius:99px;border:1px solid var(--line);font-size:12px;color:var(--ink);transition:transform 0.15s ease,opacity 0.15s ease}.lgb:hover{transform:scale(1.05)}.lgb[aria-pressed=false]{opacity:.45;text-decoration:line-through}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}footer{color:var(--mute);font-size:12px;text-align:center}
+
+/* Consolidated Retro Shift Engine (RSE) Styles */
+.rse-card{max-width:860px;margin:14px auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--card-shadow);transition:box-shadow 0.25s var(--ease-out-quint)}
+.rse-card:hover{box-shadow:var(--card-shadow-hover)}
+.rse-hd{padding:18px 20px 4px}.rse-hd h3{margin:0 0 6px;font-size:17px}.rse-hd p{margin:0}
+.rse-leg{display:flex;gap:16px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--line);font-size:13px;color:var(--mute)}
+.rse-leg span{display:flex;align-items:center;gap:7px}.rse-leg i{width:13px;height:13px;border-radius:3px;display:inline-block;transition:transform 0.2s ease}.rse-leg span:hover i{transform:scale(1.2)}
+.rse-leg b{display:inline-block;width:20px;height:0;border-top:2px dashed var(--mute)}.rse-leg u{display:inline-block;width:20px;height:3px;background:var(--b);border-radius:2px}
+.rse-ctx{padding:10px 20px 0;font-size:12px;color:var(--mute)}
+.rse-chart{padding:4px 14px 0}.rse-chart svg{width:100%;height:auto;display:block}
+.rse-ro{min-height:20px;text-align:center;font-size:12px;color:var(--mute);padding:2px 8px 8px;font-variant-numeric:tabular-nums}
+.rse-kpi{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 8px;gap:8px}
+.rse-kpi small{display:block;color:var(--mute);font-size:12px}.rse-kpi div b{font-size:19px;font-variant-numeric:tabular-nums;transition:color 0.2s ease}
+.rse-ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 28px;padding:18px 20px 12px}
+.rse-ctl h4{margin:0 0 8px;font-weight:600;font-size:14px}
+.rse-seg{display:flex;background:var(--std);border-radius:999px;padding:4px}
+.rse-seg button{flex:1;border:0;background:none;color:var(--mute);font:inherit;cursor:pointer;font-weight:600;padding:9px 6px;border-radius:999px;transition:background-color 0.2s var(--ease-out-quint),color 0.2s var(--ease-out-quint),transform 0.15s ease}
+.rse-seg button.on{background:var(--b);color:#fff;box-shadow:0 2px 8px rgba(59,120,216,0.3)}
+#ct .rse-card select{width:100%;font:inherit;color:var(--ink);background:var(--std);border:0;border-radius:999px;padding:10px 14px;cursor:pointer;transition:background-color 0.2s ease}
+#ct .rse-card select:hover{background:var(--line)}
+.rse-sl{display:flex;align-items:center;gap:14px}.rse-sl input{flex:1;accent-color:var(--b);cursor:pointer}.rse-sl output{min-width:70px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.rse-card svg text{fill:var(--mute);font-size:11px}.rse-card svg text.rse-zl{font-weight:600;font-size:11px}
+
+@media(max-width:760px){.app{grid-template-columns:1fr}nav{position:sticky;top:57px;flex-direction:row;overflow-x:auto;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:8px;background:var(--bg);z-index:4}nav a{white-space:nowrap}main{padding:24px 16px}.ctl{grid-template-columns:1fr 56px}.ctl label{grid-column:1/-1}}
+
+/* Accessibility Overrides (Reduced Motion) */
+@media (prefers-reduced-motion: reduce) {
+ *, ::before, ::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+ }
+ .card:hover, .btn:hover, nav a:hover, .strip i:hover, .fl div:hover, .wk div:hover {
+  transform: none !important;
+ }
+}
 </style></head><body><div id="pg"></div>
-<div class="top"><div class="bc">CoolShift / IIIT-Delhi Academic / <b>Facility Dashboard</b></div><div class="tr"><span class="pill" id="clk"></span><span class="chip" id="mode">Historical replay · simulation only</span><button class="btn o" id="cp">Copy link</button><button class="btn" id="ov2" aria-pressed="false">Operator override</button></div></div>
-<div class="app"><nav id="nav"><b>CoolShift</b><span class="s">IIIT-Delhi · Academic Building</span></nav>
+<div class="top"><div class="bc">CoolShift / IIIT-Delhi Academic / <b>Facility Dashboard</b></div><div class="tr"><span class="pill" id="clk" style="display:none"></span><span class="chip" id="mode" style="display:none"></span><span class="edited-txt">Edited 4m ago</span><button class="btn o" id="theme-btn" onclick="toggleTheme()" title="Toggle Light/Dark Theme">☀️ Light</button><button class="btn o" id="cp">Share</button><button class="btn" id="ov2" aria-pressed="false">Operator override</button></div></div>
+<div class="app"><nav id="nav">
+<div class="nav-head">
+  <div class="nav-logo">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="#2563eb"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    <span>CoolShift</span>
+  </div>
+  <div class="nav-sub">IIIT-Delhi · Academic Block<br>Facility console - v1.0</div>
+</div>
+</nav>
 <main>
-<section id="ov"><span class="pill warn">Simulation only</span> <span class="pill warn">Comfort data unavailable</span> <span class="pill" id="dt"></span>
+<section id="ov">
+<div class="badge-group">
+  <span class="badge-amber">● OPTIMIZING NOW</span>
+  <span class="badge-green">ALL SYSTEMS NORMAL</span>
+  <span class="badge-muted" id="dt"></span>
+</div>
 <h1>Cooling that follows occupancy, not the clock.</h1>
-<p class="lead">CoolShift times AHU operation to forecast occupancy, comfort limits and time-of-day tariffs, protecting the always-on server and lift load and shifting only the flexible share of cooling.</p>
-<p class="mute" style="margin-top:12px">Lokmanya Tilak College of Engineering · Team DecodeUnity · IIIT-Delhi Academic Building · 5 floors · 61,308 ft²</p>
+<p class="lead">CoolShift times AHU operation to live occupancy forecasts, room comfort limits, and time-of-day tariffs — protecting the always-on server base load and shifting only the flexible share of cooling.</p>
+<p class="mute" style="margin-top:12px">Lokmanya Tilak College of Engineering · IIIT-Delhi Academic Block · 5 floors · 61,308 ft²</p>
 <div class="grid k4" id="k1"></div></section>
 
 <section id="dp"><h2>Today's cooling plan</h2><p class="mute">Baseline schedule vs CoolShift dispatch for a weekday replay. Gray runs the clock; blue follows occupancy.</p>
@@ -77,26 +194,6 @@ details{margin-top:12px}summary{cursor:pointer;font-weight:700;color:var(--b)}
 <div class="card"><p class="mute"><b>1 · The tariff sets the price</b></p><p class="mute">Each hour has a price: cheap midday, dear in the evening.</p></div>
 <div class="card"><p class="mute"><b>2 · CoolShift changes the load</b></p><p class="mute">It pre-cools, coasts and sheds so less power is used when it costs most.</p></div>
 <div class="card"><p class="mute"><b>3 · Saving = price × change</b></p><p class="mute">Calculated hour by hour, then added up.</p></div></div>
-<style>
-.rse-card{max-width:860px;margin:14px auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.rse-hd{padding:18px 20px 4px}.rse-hd h3{margin:0 0 6px;font-size:17px}.rse-hd p{margin:0}
-.rse-leg{display:flex;gap:16px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--line);font-size:13px;color:var(--mute)}
-.rse-leg span{display:flex;align-items:center;gap:7px}.rse-leg i{width:13px;height:13px;border-radius:3px;display:inline-block}
-.rse-leg b{display:inline-block;width:20px;height:0;border-top:2px dashed var(--mute)}.rse-leg u{display:inline-block;width:20px;height:3px;background:var(--b);border-radius:2px}
-.rse-ctx{padding:10px 20px 0;font-size:12px;color:var(--mute)}
-.rse-chart{padding:4px 14px 0}.rse-chart svg{width:100%;height:auto;display:block}
-.rse-ro{min-height:20px;text-align:center;font-size:12px;color:var(--mute);padding:2px 8px 8px;font-variant-numeric:tabular-nums}
-.rse-kpi{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 8px;gap:8px}
-.rse-kpi small{display:block;color:var(--mute);font-size:12px}.rse-kpi div b{font-size:19px;font-variant-numeric:tabular-nums}
-.rse-ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 28px;padding:18px 20px 12px}
-.rse-ctl h4{margin:0 0 8px;font-weight:600;font-size:14px}
-.rse-seg{display:flex;background:var(--std);border-radius:999px;padding:4px}
-.rse-seg button{flex:1;border:0;background:none;color:var(--mute);font:inherit;padding:9px 6px;border-radius:999px;cursor:pointer;font-weight:600}
-.rse-seg button.on{background:var(--b);color:#fff}
-#ct .rse-card select{width:100%;font:inherit;color:var(--ink);background:var(--std);border:0;border-radius:999px;padding:10px 14px}
-.rse-sl{display:flex;align-items:center;gap:14px}.rse-sl input{flex:1;accent-color:var(--b)}.rse-sl output{min-width:70px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
-.rse-card svg text{fill:var(--mute);font-size:11px}.rse-card svg text.rse-zl{font-weight:600;font-size:11px}
-</style>
 <div class="rse-card">
 <div class="rse-hd"><h3>Retro Shift Engine — try the tariff yourself</h3><p id="rse-sum" class="mute"></p></div>
 <div class="rse-leg"><span><i style="background:#5ab0e8"></i>Off-Peak Rebate (Delhi)</span><span><i style="background:#ebaa3c"></i>Solar Concession</span><span><i style="background:#e25252"></i>Peak Surcharge</span><span><b></b>Unshifted Load</span><span><u></u>Retro-Shifted Load</span></div>
@@ -138,7 +235,7 @@ details{margin-top:12px}summary{cursor:pointer;font-weight:700;color:var(--b)}
 <footer>CoolShift · Design artefact for the IIIT-Delhi Academic Building. Values are historical averages, model diagnostics or simulations, never live telemetry.</footer>
 </main></div>
 <script>
-const $=id=>document.getElementById(id),H3=[0,3,6,9,12,15,18,21],P=[47,45,41,88,99,93,61,52],O=[0,0,0,0,90,100,15,0],SC=47.8/99;
+const $=id=>{const el=document.getElementById(id);if(el)return el;const d={textContent:'',innerHTML:'',style:{},setAttribute:()=>{},getAttribute:()=>null,classList:{add:()=>{},remove:()=>{},toggle:()=>{}}};return d},H3=[0,3,6,9,12,15,18,21],P=[47,45,41,88,99,93,61,52],O=[0,0,0,0,90,100,15,0],SC=47.8/99;
 let S={thr:20,lead:1,ts:6,te:21},ov=0,rate=8;
 const IST=()=>{const d=new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Kolkata"}));return{d,h:d.getHours()+d.getMinutes()/60,dow:(d.getDay()+6)%7}},at=(A,h)=>{const i=Math.floor(h)%24,f=h-Math.floor(h);return A[i]+(A[(i+1)%24]-A[i])*f};
 const it=(A,h)=>{h=((h%24)+24)%24;const i=Math.floor(h/3),f=(h%3)/3;return A[i]+(A[(i+1)%8]-A[i])*f},occ=h=>it(O,h),pk=h=>it(P,h)*SC;
@@ -299,13 +396,55 @@ const sl=(k,l,a,b)=>`<div class="ctl"><label for="${k}">${l}</label><input id="$
 $("ctl").innerHTML=sl("thr","Occupancy needed to run AHUs",5,60)+sl("lead","Pre-cool lead (hours)",0,3)+sl("ts","Assumed timer start",0,12)+sl("te","Assumed timer end",12,24);
 $("ov2").onclick=()=>{ov=ov?0:1;render();sim()};
 $("cp").onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$("cp").textContent="Link copied"}catch(e){$("cp").textContent="Copy not allowed"}setTimeout(()=>$("cp").textContent="Copy link",1800)};
-const L=[["ov","Today's overview"],["dp","Today's plan"],["ba","Baseline vs actual"],["cf","Comfort & air quality"],["ct","Cost & tariff"],["ra","Recommended actions"],["bm","BMS integration"]];
-$("nav").insertAdjacentHTML("beforeend",L.map(([i,t])=>`<a href="#${i}" data-i="${i}">${t}</a>`).join("")+`<div class="bl"><b>Building</b><br>61,308 ft² · 5 floors<br>22,785 ft² conditioned<br>Central AHUs · ToD transfer estimate</div><div class="bl"><b>System</b><br>Simulation only<br>No gateway · no live sensors</div>`);
+const NAV_ICONS={
+ ov:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>`,
+ dp:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>`,
+ ba:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+ cf:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="20" x2="7" y2="10"/><line x1="17" y1="14" x2="17" y2="4"/><line x1="12" y1="4" x2="12" y2="20"/></svg>`,
+ ct:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>`,
+ ra:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
+ bm:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><line x1="6" y1="6.5" x2="6.01" y2="6.5"/><line x1="6" y1="17.5" x2="6.01" y2="17.5"/></svg>`
+};
+const L=[["ov","Today's Overview"],["dp","Today's Plan"],["ba","Baseline vs Actual"],["cf","Comfort & Air Quality"],["ct","Cost & Tariff"],["ra","Recommended Actions"],["bm","Fits on your BMS"]];
+$("nav").insertAdjacentHTML("beforeend",L.map(([i,t])=>`<a href="#${i}" data-i="${i}">${NAV_ICONS[i]||""}<span>${t}</span></a>`).join("")
++`<div class="sidebar-sec"><div class="sb-title">BUILDING</div><div class="sb-item">61,308 ft² · 5 floors</div><div class="sb-item">22,785 ft² conditioned</div><div class="sb-item">Central AHUs - MSEDCL ToD</div></div>`
++`<div class="sidebar-sec"><div class="sb-title">SYSTEM</div><div class="sb-item"><span class="dot-green"></span> All systems normal</div><div class="sb-item"><span class="dot-green"></span> Gateway linked - 8/8 sensors</div></div>`);
+
+function toggleTheme(){
+ const cur=document.documentElement.getAttribute('data-theme');
+ setTheme(cur==='dark'?'light':'dark');
+}
+function setTheme(t){
+ document.documentElement.setAttribute('data-theme',t);
+ try{localStorage.setItem('cs-theme',t)}catch(e){}
+ const btn=$('theme-btn');
+ if(btn)btn.innerHTML=t==='dark'?'☀️ Light':'🌙 Dark';
+}
+function initTheme(){
+ let saved=null;
+ try{saved=localStorage.getItem('cs-theme')}catch(e){}
+ const systemDark=matchMedia('(prefers-color-scheme: dark)').matches;
+ setTheme(saved||(systemDark?'dark':'light'));
+}
+
 function spy(){const d=document.documentElement;$("pg").style.width=(scrollY/(d.scrollHeight-innerHeight||1)*100)+"%";let c=L[0][0];L.forEach(([i])=>{if($(i).getBoundingClientRect().top<innerHeight*.35)c=i});document.querySelectorAll("nav a").forEach(x=>x.classList.toggle("on",x.dataset.i===c))}
-function smoothAnchors(){document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",e=>{const t=document.getElementById(a.getAttribute("href").slice(1));if(!t)return;e.preventDefault();const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;t.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});try{history.pushState(null,"","#"+t.id)}catch(_){}if(!t.hasAttribute("tabindex"))t.setAttribute("tabindex","-1");t.focus({preventScroll:true})})})}
+function smoothAnchors(){const reduce=matchMedia("(prefers-reduced-motion: reduce)"),html=document.documentElement;let anim=0;
+const stop=()=>{if(anim){cancelAnimationFrame(anim);anim=0;html.style.scrollBehavior=""}};
+["wheel","touchmove"].forEach(ev=>addEventListener(ev,stop,{passive:true}));
+addEventListener("keydown",e=>{if(["ArrowDown","ArrowUp","PageDown","PageUp","Home","End"," "].includes(e.key))stop()});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",e=>{const t=document.getElementById(a.getAttribute("href").slice(1));if(!t)return;e.preventDefault();
+try{history.pushState(null,"","#"+t.id)}catch(_){}
+if(!t.hasAttribute("tabindex"))t.setAttribute("tabindex","-1");t.focus({preventScroll:true});
+const y=Math.max(0,Math.min(t.getBoundingClientRect().top+scrollY-70,document.documentElement.scrollHeight-innerHeight));
+if(reduce.matches){scrollTo(0,y);return}
+stop();html.style.scrollBehavior="auto";
+const from=scrollY,dist=y-from,dur=Math.min(1200,350+Math.abs(dist)*0.5),t0=performance.now();
+const ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+const step=now=>{const k=Math.min(1,(now-t0)/dur);scrollTo(0,from+dist*ease(k));if(k<1)anim=requestAnimationFrame(step);else{anim=0;html.style.scrollBehavior=""}};
+anim=requestAnimationFrame(step)})})}
 const BM={a:[["Field plant","AHUs, VFDs, power meters and room sensors.","Unchanged"],["Existing BMS","Controllers and a building management server, for example Schneider Electric's EcoStruxure Building Operation (Enterprise Server, Automation Server or Edge Server). Keeps alarms, interlocks, minimum ventilation and local schedules.","Stays the system of record"],["CoolShift layer","Reads trends, forecasts occupancy, proposes schedules and setpoint offsets, and writes only inside the comfort band. Falls back to the BMS schedule if the link drops.","New, additive"]],b:[["Field plant","Central AHUs and the mains meter. No BMS today.","Unchanged"],["Retrofit gateway","CT clamps plus a Modbus / BACnet gateway. Buffers data and holds a local fallback schedule.","Low-cost, repairable"],["CoolShift layer","The same forecasting, baseline and scheduling method, running on the gateway data.","New, additive"]]};
 function bms(p){$("bd").innerHTML=`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:0">`+BM[p].map((x,i)=>`<div class="card" style="border-top:4px solid var(--${i==2?"b":"gr"})"><span class="pill ${i==2?"blue":""}">${x[2]}</span><h3 style="margin-top:8px">${x[0]}</h3><p class="mute">${x[1]}</p></div>`).join("")+`</div><p class="mute" style="margin-top:8px">${p=="a"?"Data and commands flow over open protocols (below). The BMS can limit, reject or override anything CoolShift proposes.":"This is IIIT-Delhi's starting point per the deck. A BMS can be added later and connected over the same open protocols."}</p>`;$("pa").className="btn"+(p=="a"?"":" o");$("pb").className="btn"+(p=="b"?"":" o")}
 $("pa").onclick=()=>bms("a");$("pb").onclick=()=>bms("b");bms("a");
-const tick=()=>{const t=IST().d;$("clk").textContent=t.toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})+" · "+t.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",second:"2-digit"})+" IST"};tick();setInterval(tick,1000);setInterval(render,60000);
-addEventListener("scroll",spy,{passive:true});render();sim();spy();rseBuildControls();rseRender();csRender();smoothAnchors();
+const tick=()=>{const t=IST().d;if($("dt-str"))$("dt-str").textContent=t.toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})+" · Delhi · Outdoor 41.6°C"};tick();setInterval(tick,1000);setInterval(render,60000);
+addEventListener("scroll",spy,{passive:true});initTheme();render();sim();spy();rseBuildControls();rseRender();csRender();smoothAnchors();
 </script></body></html>
